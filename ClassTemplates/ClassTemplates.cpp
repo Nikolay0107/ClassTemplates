@@ -28,37 +28,64 @@ public:
 Это нужно, чтобы класс мог работать с любыми типами данных.
 */
 
-template<typename T1, typename T2>
-class MyClass
+
+//класс предок
+template<typename T1>
+class TypeSize
 {
 public:
-    MyClass(T1 value, T2 value_2) // конструктор, в котором присваеваем принятую из main переменную value в текущую переменную value
+    TypeSize(T1 value):TypeInfo<T>(value)
     {
         this->value = value;
-        this->value_2 = value_2;
     }
-
-    void DataTypeSize() // функция, которая будет сообщать размер переменной
+    void DataTypeSize()
     {
-        cout<< "Value " << sizeof(value) << endl;
-        cout << "Value_2 " << sizeof(value_2) << endl;
+        cout << "value: " << sizeof(value) << endl;
+    }
+
+protected:
+    T1 value;
+};
+
+
+
+
+
+// класс потомок
+template<typename T1>
+class TypeInfo : public TypeSize<T1>
+{
+public:
+    TypeInfo(T1 value):TypeSize<T1>(value)
+    {
 
     }
 
-private:
-    T1 value;
-    T2 value_2;
+    void ShowTypeName()
+    {
+        cout << "Название типа: " << typeid(TypeSize<T1>::value).name() << endl;
+    }
 };
+
+
+
+
+
+
+
+
+
 
 int main()
 {
-    int a = 5; // создаем переменную "а", присваеваем ей значение "5"
-    Point r; // создаем объект r типа Point
 
-    MyClass<int, Point> c(a, r); // создаем объект класса MyClass, указываем в <int>, что он будет работать с типом данных int, так как он шаблонный, и передаем туда переменную "а"
-    
+    setlocale(LC_ALL, "ru");
+
+    double a = 2; // создаем объект r типа Point
+
+    TypeSize<double> c(a);
+
+   
     c.DataTypeSize(); // вызываем функцию DataTypeSize для объекта "c"
-
     return 0;
 }
-
